@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Servicios - Exodesertica</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    :root{
+      --green-dark:#3F5E32;
+      --green-mid:#607C3C;
+      --green-light:#8CA948;
+      --sand:#D9A857;
+      --beige:#F5F1E7;
+    }
+
+    body {
+      background: linear-gradient(180deg, var(--beige), #ffffff);
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+    }
+
+    header {
+      background: linear-gradient(90deg, var(--green-dark), var(--green-mid) 60%, var(--green-light));
+      padding: 10px 20px;
+      display: flex; justify-content: space-between; align-items: center;
+      position: sticky; top: 0; z-index: 1000;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    }
+    header img { height: 55px; border-radius: 8px; cursor: pointer; }
+
+    nav { display: flex; gap: 20px; }
+    nav a {
+      color: white; text-decoration: none; font-weight: bold; position: relative; transition: color 0.3s;
+    }
+    nav a::after {
+      content: ""; width: 0%; height: 2px; background: var(--sand);
+      position: absolute; left: 0; bottom: -5px; transition: 0.3s;
+    }
+    nav a:hover { color: var(--sand); }
+    nav a:hover::after { width: 100%; }
+
+    .menu-icon {
+      font-size: 26px;
+      color: white;
+      background: var(--sand);
+      width: 45px; height: 45px;
+      display: none;
+      align-items: center; justify-content: center;
+      border-radius: 8px;
+      cursor: pointer;
+      box-shadow: 0 3px 6px rgba(0,0,0,0.3);
+      transition: background 0.3s, transform 0.2s;
+    }
+    .menu-icon:hover {
+      background: var(--green-light);
+      color: white;
+      transform: scale(1.05);
+    }
+
+    .sidebar {
+      position: fixed; top: 0; right: -260px;
+      width: 240px; height: 100%;
+      background: var(--green-dark);
+      display: flex; flex-direction: column;
+      padding: 20px; transition: right 0.3s ease-in-out;
+      z-index: 2000;
+      box-shadow: -4px 0 15px rgba(0,0,0,0.4);
+    }
+    .sidebar.active { right: 0; }
+    .sidebar a {
+      color: white; text-decoration: none; font-size: 18px;
+      padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.2);
+      transition: color 0.3s;
+    }
+    .sidebar a:hover { color: var(--sand); }
+    .close-btn {
+      font-size: 28px; color: white; align-self: flex-end; cursor: pointer; margin-bottom: 20px;
+    }
+
+    @media(max-width: 768px) {
+      nav { display: none; }
+      .menu-icon { display: flex; }
+    }
+
+    .hero {
+      height: 40vh;
+      background:
+        linear-gradient(0deg, rgba(140,169,72,0.35), rgba(63,94,50,0.35)),
+        url("https://via.placeholder.com/1200x500?text=Exodesertica") no-repeat center/cover;
+      display: flex; align-items: center; justify-content: center;
+      text-align: center; color: white;
+      font-size: 3em; font-weight: bold;
+      text-shadow: 2px 2px 10px #000;
+    }
+
+    .servicios {
+      max-width: 1200px;
+      margin: 50px auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 30px;
+      padding: 0 20px;
+    }
+
+    .card-servicio { perspective: 1000px; }
+    .card-inner {
+      position: relative;
+      width: 100%;
+      height: 300px;
+      transition: transform 0.8s;
+      transform-style: preserve-3d;
+      cursor: pointer;
+    }
+    .card-servicio:hover .card-inner { transform: rotateY(180deg); }
+
+    .card-front, .card-back {
+      position: absolute;
+      width: 100%; height: 100%;
+      border-radius: 15px;
+      backface-visibility: hidden;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+      overflow: hidden;
+    }
+
+    .card-front {
+      background: #ffffff;
+      display: flex; flex-direction: column; justify-content: center; align-items: center;
+      padding: 20px;
+      border: 2px solid var(--green-light);
+      box-shadow: 0 0 0 4px rgba(140,169,72,0.12);
+    }
+    .card-front img {
+      width: 100%; height: 180px; object-fit: cover;
+      border-radius: 10px;
+      margin-bottom: 10px;
+    }
+    .card-front h3 {
+      color: var(--green-dark); font-weight: bold; position: relative; margin-bottom: 0;
+    }
+    .card-front h3::after{
+      content:""; display:block; width:56px; height:4px; margin:8px auto 0;
+      background: var(--green-light); border-radius: 999px;
+    }
+
+    .card-back {
+      background: linear-gradient(160deg, var(--green-light), var(--green-mid), var(--green-dark));
+      color: var(--beige);
+      transform: rotateY(180deg);
+      display: flex; align-items: center; justify-content: center;
+      padding: 20px; text-align: center;
+    }
+
+    footer {
+      background: linear-gradient(90deg, var(--green-dark), var(--green-mid) 60%, var(--green-light));
+      color: white; padding: 40px 20px; text-align: center;
+      margin-top: 60px;
+    }
+    footer a { color: var(--sand); margin: 0 10px; font-weight: bold; text-decoration: none; }
+    footer a:hover { color: #ffffff; }
+
+    @media (hover: none) {
+      .card-servicio .card-inner:active { transform: rotateY(180deg); }
+    }
+
+    .chat-button {
+      position: fixed; bottom: 25px; right: 25px;
+      width: 65px; height: 65px; background: var(--sand);
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      color: var(--green-dark); font-size: 28px; cursor: pointer;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+      transition: transform 0.3s, background 0.3s;
+      z-index: 2000;
+    }
+    .chat-button:hover { transform: scale(1.1); background: var(--green-light); color: #fff; }
+
+    #asistente-virtual {
+      position: fixed; bottom: 100px; right: 25px;
+      width: 300px; background: var(--beige); border-radius: 12px;
+      border: 2px solid var(--green-light);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      padding: 20px; display: none; animation: fadeIn 0.5s;
+      z-index: 1999;
+    }
+    #asistente-virtual h2 { font-size: 1.2em; margin-bottom: 10px; color: var(--green-mid); }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(20px);} to { opacity: 1; transform: translateY(0);} }
+
+  </style>
+</head>
+<body>
+
+  <header>
+    <img src="img/exo_logo_bn.png" alt="Exodesertica">
+    <nav>
+      <a href="Interfaz_grafica.html">Inicio</a>
+      <a href="Nosotros.html">Nosotros</a>
+      <a href="Servicios.html">Servicios</a>
+      <a href="https://wa.me/51935187288?text=Hola,%20quiero%20hacer%20una%20reserva" target="_blank">Reservas</a>
+    </nav>
+    <div class="menu-icon" onclick="toggleSidebar()">☰</div>
+  </header>
+
+  <div class="sidebar" id="sidebar">
+    <div class="close-btn" onclick="toggleSidebar()">✖</div>
+    <a href="index.html">Inicio</a>
+    <a href="Nosotros.html">Nosotros</a>
+    <a href="Servicios.html">Servicios</a>
+    <a href="https://wa.me/51935187288?text=Hola,%20quiero%20hacer%20una%20reserva" target="_blank">Reservas</a>
+  </div>
+
+  <section class="hero">
+    Nuestros Servicios
+  </section>
+
+  <section class="servicios">
+    <div class="card-servicio">
+      <div class="card-inner">
+        <div class="card-front">
+          <img src="img2/IMG_20250221_183513.jpg" alt="Guiados">
+          <h3>Guiados Interactivos</h3>
+        </div>
+        <div class="card-back">
+          <p>Disfruta de recorridos únicos con guías especializados, donde podrás conocer de cerca a nuestros animales exóticos.</p>
+        </div>
+      </div>
+    </div>
+    <div class="card-servicio">
+      <div class="card-inner">
+        <div class="card-front">
+          <img src="img/WhatsApp Image 2025-09-04 at 4.27.07 PM.jpeg" alt="Shows">
+          <h3>Shows de Cumpleaños y Escolares</h3>
+        </div>
+        <div class="card-back">
+          <p>Vive experiencias inolvidables con presentaciones especiales para niños, colegios y celebraciones.</p>
+        </div>
+      </div>
+    </div>
+    <div class="card-servicio">
+      <div class="card-inner">
+        <div class="card-front">
+          <img src="https://via.placeholder.com/400x250?text=Alimento+Vivo" alt="Alimento">
+          <h3>Venta de Alimento Vivo</h3>
+        </div>
+        <div class="card-back">
+          <p>Ofrecemos alimento vivo de calidad para reptiles, aves y pequeños mamíferos.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="chat-button" onclick="toggleChat()">💬</div>
+
+  <div id="asistente-virtual">
+    <h2>🤖 Asistente Virtual</h2>
+    <p>¡Hola! ¿Quieres reservar, saber horarios o más info de la expo?</p>
+    <p><a href="https://wa.me/51935187288?text=Hola,%20quiero%20información%20de%20la%20expo" target="_blank" style="color:var(--green-dark); font-weight:bold;">👉 Escríbenos aquí</a></p>
+  </div>
+
+  <footer>
+    <p>📍 Contacto: +51 935 518 288 | Calle Alhelíes #143, Urb San Isidro, Ica - Perú</p>
+    <p>Síguenos:
+      <a href="https://www.instagram.com/exo.desertica_pe?igsh=bmdscmVuaW5rMG11">Instagram</a> |
+      <a href="https://www.facebook.com/share/1CSYxjeKVS/">Facebook</a> |
+      <a href="https://www.tiktok.com/@exodesertica">TikTok</a> |
+      <a href="https://wa.me/51935187288?text=Hola,%20quiero%20hacer%20una%20reserva" target="_blank">Whatsapp</a>
+    </p>
+    <p>&copy; 2025 Exodesertica</p>
+  </footer>
+
+  <script>
+    function toggleChat() {
+      const chat = document.getElementById("asistente-virtual");
+      chat.style.display = chat.style.display === "block" ? "none" : "block";
+    }
+
+    function toggleSidebar() {
+      document.getElementById("sidebar").classList.toggle("active");
+    }
+  </script>
+</body>
+</html>
